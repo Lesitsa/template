@@ -6,7 +6,7 @@
     min-height: 100%;
 }
 
-ul{
+.my_ul{
     list-style: none;
     margin: 0;
     padding: 0;
@@ -39,7 +39,7 @@ ul{
     cursor: pointer;
 }
 
-.logo svg{
+.logo_svg{
     height: 40px;
     width: 130px;
 }
@@ -48,12 +48,12 @@ ul{
     margin-top: 18px;
 }
 
-.left__main__menu li{
+.left__main__menu_li{
     display: flex;
     align-items: center;
 }
 
-.left__main__menu a{
+.left__main__menu_a{
     display: flex;
     color: #b3b3b3;
     font-family: Arial, Helvetica, sans-serif;
@@ -63,12 +63,12 @@ ul{
     padding: 9px 0px;
 }
 
-.left__main__menu a:hover{
+.left__main__menu_a:hover{
     color: white;
     outline: none;
 }
 
-.left__main__menu svg{
+.left__main__menu_svg{
     align-items: center;
     margin-right: 10px;
 }
