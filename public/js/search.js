@@ -1,4 +1,5 @@
 import { token } from "./token.js";
+import { swit } from "./switchError.js";
 
 /**
  * Осуществляет выполнение функции func с периодичностью в ms миллисекунд.
@@ -16,14 +17,13 @@ const debounce = (func, ms) => {
     }
 }
 
-let stat = undefined;
-
 /**
  * Получение выпадающего списка треков.
  */
 async function search() {
     if (document.querySelector(".header__search").value != "") {
-        document.querySelector(".search__container").style.display = "flex";
+        //Включение отображения выпадающего списка треков, если строка поиска не пуста
+        document.querySelector(".search__container").classList.add("display__flex");
         fetch("https://api.spotify.com/v1/search?q=track:+" 
              + document.querySelector(".header__search").value + "++&type=track", {
             headers:{
@@ -32,12 +32,15 @@ async function search() {
             }
         }).then((result) => {
             if (!result.ok){
+                //Возвращение Promise с указанием ошибки
                 return Promise.reject(result.status);
             }
             else {
+                //Возвращение положительного результата с преобразованием в JSON формат
                 return result.json()
             }
         }).then((data) => {
+            //Заполнение выпадающего списка треками
             const container = document.querySelector(".search__container");
             container.innerHTML = "";
             data.tracks.items.forEach(element => {
@@ -45,8 +48,11 @@ async function search() {
                 a.classList.add("search__container__a");
 
                 const div = document.createElement("div");
+                //Объявление события при нажатии на трек, результат - воспроизведение
                 div.addEventListener("click",function(){
                     let audio = document.querySelector("audio");
+                    //Включение отображения аудио-меню
+                    audio.classList.add("display__flex");
                     audio.setAttribute("src",element.preview_url);
                 });
 
@@ -63,34 +69,22 @@ async function search() {
                 div.appendChild(a);
                 container.appendChild(div);
             });
+        //Обработка исключений
         }).catch(function(error) {
-            switch(error) {
-                case 400:
-                    stat = 400;
-                    window.localStorage.setItem("status",stat);
-                    window.location.href = "http://localhost:3000/error.html";
-                    break;
-                case 401:
-                    stat = 401;
-                    window.localStorage.setItem("status",stat);
-                    window.location.href = "http://localhost:3000/error.html";
-                    break;
-                case 403:
-                    stat = 403;
-                    window.localStorage.setItem("status",stat);
-                    window.location.href = "http://localhost:3000/error.html";
-                    break;
-            }
+            //Вызов функции переадресации
+            swit(error);
         });
     }
     else {
-        document.querySelector(".search__container").style.display = "none";
+        //Выключение отображения выпадающего списка треков, если строка поиска пуста
+        document.querySelector(".search__container").classList.remove("display__flex");
     }
 };
-
-search = debounce(search, 200);
+//Настройка задержки функции search, используя функцию-обертку debounce
+search = debounce(search, 700);
 if(!!document.querySelector('.header__search'))
+    //Объявление события при "отпускании" клавиши,
+    //результат - начало поиска по содержимому строки поиска
     document.querySelector(".header__search").addEventListener("keyup", async() => {
         await search();
 })
-

@@ -414,6 +414,7 @@
 }
 
 .audio {
+    display: none;
     margin-left: 32px;
     height: 37px;
     width: 385px;
@@ -421,6 +422,9 @@
     bottom: 10px;
 }
 
+.display__flex {
+    display: flex;
+}
 
 
 @media screen and (max-width:870px){

@@ -11,13 +11,15 @@ async function recommendation(){
     }
     }).then((result) => {
         if (!result.ok){
+            //Возвращение Promise с указанием ошибки 
             return Promise.reject(result.status);
         }
         else {
+            //Возвращение положительного результата с преобразованием в JSON формат
             return result.json()
         }
     }).then((data) => {
-        console.log(data);
+        //Создание элементов (плейлистов) и помещение их на страницу поиска
         let mainDiv = document.createElement("div");
         mainDiv.classList.add("recommendation__line");
 
@@ -45,22 +47,11 @@ async function recommendation(){
             
             document.querySelector(".recommendation__line__ul").appendChild(li);
         });
+    //Обработка исключений
     }).catch(function(error) {
-        switch(error) {
-            case 400:
-                window.localStorage.setItem("status","400");
-                window.location.href = "http://localhost:3000/error.html";
-                break;
-            case 401:
-                window.localStorage.setItem("status","401");
-                window.location.href = "http://localhost:3000/error.html";
-                break;
-            case 403:
-                window.localStorage.setItem("status","403");
-                window.location.href = "http://localhost:3000/error.html";
-                break;
-        }
-    }) 
+        //Вызов функции переадресации
+        swit(error);
+    });
 }
 
 recommendation();
