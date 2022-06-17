@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
-const Recommendation = (props: { listData: any }) => {
+const Recommendation = (props: { listData: never[] }) => {
     if (props.listData !== []) {
         return (
             <div  className="recommendation__menu">
